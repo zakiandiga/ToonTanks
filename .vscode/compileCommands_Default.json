@@ -1,0 +1,27 @@
+[
+	{
+		"file": "D:\\UnrealProject\\ToonTanks\\Source\\ToonTanks\\Private\\BasePawn.cpp",
+		"command": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe\" @D:\\UnrealProject\\ToonTanks\\.vscode\\compileCommands_Default\\ToonTanks.205.rsp",
+		"directory": "D:\\Unreal\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "D:\\UnrealProject\\ToonTanks\\Source\\ToonTanks\\Public\\BasePawn.h",
+		"command": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe\" @D:\\UnrealProject\\ToonTanks\\.vscode\\compileCommands_Default\\ToonTanks.205.rsp",
+		"directory": "D:\\Unreal\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "D:\\UnrealProject\\ToonTanks\\Source\\ToonTanks\\ToonTanks.Build.cs",
+		"command": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe\" @D:\\UnrealProject\\ToonTanks\\.vscode\\compileCommands_Default\\ToonTanks.205.rsp",
+		"directory": "D:\\Unreal\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "D:\\UnrealProject\\ToonTanks\\Source\\ToonTanks\\ToonTanks.cpp",
+		"command": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe\" @D:\\UnrealProject\\ToonTanks\\.vscode\\compileCommands_Default\\ToonTanks.205.rsp",
+		"directory": "D:\\Unreal\\UE_5.0\\Engine\\Source"
+	},
+	{
+		"file": "D:\\UnrealProject\\ToonTanks\\Source\\ToonTanks\\ToonTanks.h",
+		"command": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe\" @D:\\UnrealProject\\ToonTanks\\.vscode\\compileCommands_Default\\ToonTanks.205.rsp",
+		"directory": "D:\\Unreal\\UE_5.0\\Engine\\Source"
+	}
+]
