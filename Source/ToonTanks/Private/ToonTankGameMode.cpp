@@ -7,8 +7,6 @@
 #include "PlayerTank.h"
 #include "EnemyTurret.h"
 
-
-
 void AToonTankGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -42,7 +40,6 @@ void AToonTankGameMode::GameStartFollowUp()
 
 void AToonTankGameMode::ActorDied(AActor* DiedActor)
 {
-	UE_LOG(LogTemp, Error, TEXT("%s dead!"), *DiedActor->GetActorNameOrLabel());
 	if (DiedActor == PlayerTank)
 	{	
 		if (TankPlayerController)

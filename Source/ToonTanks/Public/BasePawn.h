@@ -8,6 +8,7 @@
 
 class UCapsuleComponent;
 class UHealthComponent;
+class USoundBase;
 UCLASS()
 class TOONTANKS_API ABasePawn : public APawn
 {
@@ -76,6 +77,15 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attack Properties")
 	TSubclassOf<class ABullet> BulletClass;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Attack Properties")
+	USoundBase* DieSound;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Attack Properties")
+	TSubclassOf<class UCameraShakeBase> DeathCameraShakeClass;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Attack Properties")
+	class UParticleSystem* DeathParticle;
 
 	FTimerHandle AttackFireTimer;
 	FTimerHandle ReloadTimer;

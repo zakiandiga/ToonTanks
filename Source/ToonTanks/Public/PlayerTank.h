@@ -26,9 +26,9 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	APlayerController* GetPlayerController() const { return TankPlayerController; }
+	APlayerController* GetPlayerController() const { return TankPlayerController; }	
 
-	
+	bool CheckPlayerAlive() const { return bIsAlive; }
 	
 private:
 
@@ -45,6 +45,8 @@ private:
 	float TurnSpeed = 100;
 
 	APlayerController* TankPlayerController;
+
+	bool bIsAlive = true;
 
 	void MoveForward(float value);
 

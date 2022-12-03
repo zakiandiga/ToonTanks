@@ -5,7 +5,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/DamageType.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Camera/CameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -15,10 +18,12 @@ ABullet::ABullet()
 
 	BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Bullet Mesh"));
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle System"));
 		
 	RootComponent = BulletMesh;
 	ProjectileMovementComponent->MaxSpeed = 1500;
 	ProjectileMovementComponent->InitialSpeed = 800;
+	ParticleSystemComponent->SetupAttachment(RootComponent);
 
 }
 
@@ -27,29 +32,45 @@ void ABullet::BeginPlay()
 	Super::BeginPlay();		
 
 	BulletMesh->OnComponentHit.AddDynamic(this, &ABullet::OnHit);
+
+	if (ShotSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ShotSound, GetActorLocation());
+	}
 }
 
-// Called every frame
-void ABullet::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 void ABullet::OnHit(UPrimitiveComponent* HitComponent, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	
-	auto BulletOwner = GetOwner();
+
+	AActor* BulletOwner = GetOwner();
 
 	if (BulletOwner == nullptr) return;
 
-	auto OwnerInstigator = BulletOwner->GetInstigatorController();
+	AController* OwnerInstigator = BulletOwner->GetInstigatorController();
 
-	if (Other && Other != this && Other != BulletOwner)
+	if (BulletOwner && Other && Other != this && Other != BulletOwner)
 	{
 		UGameplayStatics::ApplyDamage(Other, DamageAmount, OwnerInstigator, BulletOwner, UDamageType::StaticClass());
+
+		if (HitParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation(), GetActorRotation());
+		}	
+
+		if (ImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+		}
+
+		if (ImpactCameraShakeClass)
+		{
+			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(ImpactCameraShakeClass);
+		}
+
 	}
 
 	Destroy();
+
 }
 

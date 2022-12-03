@@ -7,7 +7,7 @@
 #include "TimerManager.h"
 #include "Bullet.h"
 #include "HealthComponent.h"
-#include "DrawDebugHelpers.h"
+#include "Camera/CameraShakeBase.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -62,7 +62,7 @@ void ABasePawn::Attack()
 	//Shoot the bullet
 	if (BulletClass)
 	{	
-		auto BulletSpawned = GetWorld()->SpawnActor<ABullet>(BulletClass, BulletSpawnPoint->GetComponentLocation(), BulletSpawnPoint->GetComponentRotation());
+		ABullet* BulletSpawned = GetWorld()->SpawnActor<ABullet>(BulletClass, BulletSpawnPoint->GetComponentLocation(), BulletSpawnPoint->GetComponentRotation());
 		BulletSpawned->SetOwner(this);
 	}		
 }
@@ -87,11 +87,21 @@ void ABasePawn::AmmoReloading()
 }
 
 void ABasePawn::Die()
-{
-	UE_LOG(LogTemp, Error, TEXT("%s DIED!"), *GetActorNameOrLabel());
+{	
+	if (DeathParticle)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticle, GetActorLocation(), GetActorRotation());
+	}
+	
+	if (DieSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DieSound, GetActorLocation());
+	}
 
-	//VFX & SFX
-	Destroy();
+	if (DeathCameraShakeClass)
+	{
+		GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(DeathCameraShakeClass);
+	}
 }
 
 

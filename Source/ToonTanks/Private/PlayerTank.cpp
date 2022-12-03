@@ -16,13 +16,6 @@ APlayerTank::APlayerTank()
 
 }
 
-void APlayerTank::Die()
-{
-	Super::Die();
-
-	SetActorHiddenInGame(true);
-	SetActorTickEnabled(false);
-}
 
 void APlayerTank::BeginPlay()
 {
@@ -68,6 +61,15 @@ void APlayerTank::Attack()
 {
 	Super::Attack();
 	
+}
+
+void APlayerTank::Die()
+{
+	Super::Die();
+
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	bIsAlive = false;
 }
 
 FVector APlayerTank::GetMouseImpactPoint()

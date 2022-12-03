@@ -20,7 +20,7 @@ void AEnemyTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Player && CheckPlayerInRange())
+	if (Player && CheckPlayerInRange() && Player->CheckPlayerAlive())
 	{
 		RotateTurret(Player->GetActorLocation());
 
@@ -44,7 +44,9 @@ void AEnemyTurret::Die()
 
 void AEnemyTurret::Attack()
 {
-	if (!CheckPlayerInRange() && bAttackReady)
+	if (!Player) return;
+
+	if (!CheckPlayerInRange() && Player->CheckPlayerAlive() && bAttackReady)
 	{
 		return;
 	}

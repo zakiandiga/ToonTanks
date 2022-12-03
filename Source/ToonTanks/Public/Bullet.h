@@ -8,6 +8,10 @@
 
 class UProjectileMovementComponent;
 class USphereComponent;
+class UParticleSystemComponent;
+class UParticleSystem;
+class USoundBase;
+class UCameraShakeBase;
 UCLASS()
 class TOONTANKS_API ABullet : public AActor
 {
@@ -20,10 +24,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 private:
 
@@ -41,6 +41,21 @@ private:
 
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Components")
 	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Components")
+	UParticleSystemComponent* ParticleSystemComponent;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Bullet")
+	UParticleSystem* HitParticle;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Bullet")
+	USoundBase* ShotSound;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Bullet")
+	USoundBase* ImpactSound;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Bullet")
+	TSubclassOf<UCameraShakeBase> ImpactCameraShakeClass;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
