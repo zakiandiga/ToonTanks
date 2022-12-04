@@ -24,15 +24,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION()
-	void OnOwnerDie();
+	int32 GetHealthPercentage() const { return (MaxHealth - CurrentHealth) /100; }
+
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Health")
-	int32 MaxHealth = 10;
+	float MaxHealth = 10;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-	int32 CurrentHealth = 0;
+	float CurrentHealth = 0;
 
 	class AToonTankGameMode* CurrentGameMode;
 

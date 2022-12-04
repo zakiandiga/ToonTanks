@@ -15,29 +15,15 @@ ABasePawn::ABasePawn()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	BaseCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Base Capsule"));
-	RootComponent = BaseCapsule;
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body Mesh"));
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret Mesh"));
 	BulletSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Bullet Spawn Point"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-
+	
+	RootComponent = BaseCapsule;
 	BodyMesh->SetupAttachment(BaseCapsule);
 	TurretMesh->SetupAttachment(BodyMesh);
 	BulletSpawnPoint->SetupAttachment(TurretMesh);
-
-	RemainingAmmo = MaxAmmo;
-}
-
-
-
-void ABasePawn::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (!GetWorldTimerManager().IsTimerActive(ReloadTimer) && RemainingAmmo < MaxAmmo)
-	{
-		GetWorldTimerManager().SetTimer(ReloadTimer, this, &ABasePawn::AmmoReloading, ReloadTime, false);
-	}
 }
 
 void ABasePawn::RotateTurret(FVector TargetLook)
@@ -51,14 +37,7 @@ void ABasePawn::RotateTurret(FVector TargetLook)
 }
 
 void ABasePawn::Attack()
-{
-	if (bAttackOnDelay || GetWorldTimerManager().IsTimerActive(AttackFireTimer) || RemainingAmmo <= 0) return;
-
-
-	RemainingAmmo -= 1;
-	bAttackOnDelay = true;
-	GetWorldTimerManager().SetTimer(AttackFireTimer, this, &ABasePawn::ReadyingAttack, AttackSpeed, false);
-	
+{	
 	//Shoot the bullet
 	if (BulletClass)
 	{	
@@ -67,23 +46,9 @@ void ABasePawn::Attack()
 	}		
 }
 
-void ABasePawn::ReadyingAttack()
-{
-	if (bAttackOnDelay)
-	{
-		bAttackOnDelay = false;
-	}
-}
-
-void ABasePawn::AmmoReloading()
-{
-	if (RemainingAmmo >= MaxAmmo)
-	{
-		RemainingAmmo = MaxAmmo;
-		return;
-	}
-
-	RemainingAmmo += 1;
+int32 ABasePawn::GetPlayerHealth()
+{	
+	return HealthComponent->GetHealthPercentage();
 }
 
 void ABasePawn::Die()

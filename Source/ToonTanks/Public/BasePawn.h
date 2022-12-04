@@ -42,11 +42,7 @@ protected:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Attack Properties")
 	float AttackSpeed = 1;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Attack Properties")
-	float ReloadTime = 3;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Attack Properties")
-	int32 MaxAmmo = 5;
 
 	void RotateTurret(FVector TargetLook);
 
@@ -54,10 +50,11 @@ protected:
 
 public:
 
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintPure, Category = "Health")
+	int32 GetPlayerHealth();
 
-	void ReadyingAttack();
-
+	UFUNCTION(BlueprintImplementableEvent, Category = "Health")
+	void DamageTakenFollowUp(float HealthPercentage);
 	//public getter refactoring for later
 	/*	
 	public getterand setter
@@ -87,11 +84,4 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = " true"), Category = "Attack Properties")
 	class UParticleSystem* DeathParticle;
 
-	FTimerHandle AttackFireTimer;
-	FTimerHandle ReloadTimer;
-
-	int32 RemainingAmmo = 0;
-	bool bAttackOnDelay = false;
-
-	void AmmoReloading();
 };

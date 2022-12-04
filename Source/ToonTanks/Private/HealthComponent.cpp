@@ -4,6 +4,7 @@
 #include "HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ToonTankGameMode.h"
+#include "BasePawn.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -36,10 +37,10 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* Instigator, AActor* DamageSource)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s take damage from %s of %s"), *DamagedActor->GetActorNameOrLabel(), *DamageSource->GetActorNameOrLabel());
-	UE_LOG(LogTemp, Warning, (TEXT("Bullet from %s hit %s for %d damage")), *DamageSource->GetActorNameOrLabel(), *DamagedActor->GetActorNameOrLabel(), (int32)Damage);
 
 	CurrentHealth -= Damage;
+
+	Cast<ABasePawn>(GetOwner())->DamageTakenFollowUp(CurrentHealth/MaxHealth);
 
 	if (CurrentHealth <= 0)
 	{
@@ -47,7 +48,4 @@ void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDa
 	}
 }
 
-void UHealthComponent::OnOwnerDie()
-{
-}
 

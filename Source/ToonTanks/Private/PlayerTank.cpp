@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 APlayerTank::APlayerTank()
 {
@@ -30,6 +31,11 @@ void APlayerTank::Tick(float DeltaTime)
 	if (TankPlayerController)
 	{
 		RotateTurret(GetMouseImpactPoint());
+	}
+
+	if (!GetWorldTimerManager().IsTimerActive(ReloadAmmoTimer) && RemainingAmmo < MaxAmmo)
+	{
+		GetWorldTimerManager().SetTimer(ReloadAmmoTimer, this, &APlayerTank::AmmoReloading, ReloadTime, false);
 	}
 }
 
@@ -59,8 +65,35 @@ void APlayerTank::Turn(float value)
 
 void APlayerTank::Attack()
 {
+	if (!bAttackReady || GetWorldTimerManager().IsTimerActive(PlayerAttackDelayTimer) || RemainingAmmo <= 0) return;
+
+	RemainingAmmo -= 1;
+	bAttackReady = false;
+	GetWorldTimerManager().SetTimer(PlayerAttackDelayTimer, this, &APlayerTank::ReadyingAttack, AttackSpeed, false);
+	OnAttack();
+	
 	Super::Attack();
 	
+}
+
+void APlayerTank::AmmoReloading()
+{
+	if (RemainingAmmo >= MaxAmmo)
+	{
+		RemainingAmmo = MaxAmmo;
+		return;
+	}
+
+	RemainingAmmo += 1;
+}
+
+void APlayerTank::ReadyingAttack()
+{
+	if (!bAttackReady)
+	{
+		bAttackReady = true;
+		OnReadyingAttack();
+	}
 }
 
 void APlayerTank::Die()

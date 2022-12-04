@@ -12,8 +12,8 @@ void AEnemyTurret::BeginPlay()
 
 	Player = Cast<APlayerTank>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	FTimerHandle TurretLocalTimer;
-	GetWorldTimerManager().SetTimer(TurretLocalTimer, this, &AEnemyTurret::SetAttackReady, AttackSpeed, false);
+
+	GetWorldTimerManager().SetTimer(TurretAttackDelay, this, &AEnemyTurret::SetAttackReady, AttackSpeed, false);
 }
 
 void AEnemyTurret::Tick(float DeltaTime)
@@ -46,25 +46,23 @@ void AEnemyTurret::Attack()
 {
 	if (!Player) return;
 
-	if (!CheckPlayerInRange() && Player->CheckPlayerAlive() && bAttackReady)
-	{
-		return;
-	}
+	if (!CheckPlayerInRange() && Player->CheckPlayerAlive() && bAttackReady) return;
 
 	bAttackReady = false;
 	
 	Super::Attack();
 
 	AttackSpeed = FMath::FRandRange(1, 3);
-	
-	FTimerHandle TurretLocalTimer;
-	GetWorldTimerManager().SetTimer(TurretLocalTimer, this, &AEnemyTurret::SetAttackReady, AttackSpeed, false);
+
+	GetWorldTimerManager().SetTimer(TurretAttackDelay, this, &AEnemyTurret::SetAttackReady, AttackSpeed, false);
 }
 
 void AEnemyTurret::SetAttackReady()
 {
-	bAttackReady = true;
-
+	if (!bAttackReady)
+	{
+		bAttackReady = true;
+	}
 }
 
 bool AEnemyTurret::CheckPlayerInRange()
