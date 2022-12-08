@@ -22,6 +22,7 @@ void APlayerTank::BeginPlay()
 {
 	Super::BeginPlay();
 	TankPlayerController = Cast<APlayerController>(GetController());
+	RemainingAmmo = MaxAmmo;
 }
 
 void APlayerTank::Tick(float DeltaTime)
@@ -85,6 +86,7 @@ void APlayerTank::AmmoReloading()
 	}
 
 	RemainingAmmo += 1;
+	OnReloadDone();
 }
 
 void APlayerTank::ReadyingAttack()

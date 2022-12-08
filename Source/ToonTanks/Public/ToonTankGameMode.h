@@ -34,7 +34,7 @@ private:
 
 	void GameStart();
 
-	void GameStartFollowUp();
+	void GameStartCountDown();
 
 	int32 GetEnemyCount();
 };

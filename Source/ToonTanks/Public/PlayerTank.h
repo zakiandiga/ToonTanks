@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack Properties")
 	void OnReadyingAttack();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack Properties")
+	void OnReloadDone();
+
 	UFUNCTION(BlueprintPure, Category = "Attack Properties")
 	FTimerHandle GetPlayerAttackDelayTimer() { return PlayerAttackDelayTimer; }
 

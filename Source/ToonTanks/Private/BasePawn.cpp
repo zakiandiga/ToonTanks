@@ -38,12 +38,10 @@ void ABasePawn::RotateTurret(FVector TargetLook)
 
 void ABasePawn::Attack()
 {	
-	//Shoot the bullet
-	if (BulletClass)
-	{	
-		ABullet* BulletSpawned = GetWorld()->SpawnActor<ABullet>(BulletClass, BulletSpawnPoint->GetComponentLocation(), BulletSpawnPoint->GetComponentRotation());
-		BulletSpawned->SetOwner(this);
-	}		
+	if (BulletClass == nullptr) return;
+	
+	ABullet* BulletSpawned = GetWorld()->SpawnActor<ABullet>(BulletClass, BulletSpawnPoint->GetComponentLocation(), BulletSpawnPoint->GetComponentRotation());
+	BulletSpawned->SetOwner(this);	
 }
 
 int32 ABasePawn::GetPlayerHealth()

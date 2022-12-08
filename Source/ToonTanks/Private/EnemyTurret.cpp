@@ -12,7 +12,6 @@ void AEnemyTurret::BeginPlay()
 
 	Player = Cast<APlayerTank>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-
 	GetWorldTimerManager().SetTimer(TurretAttackDelay, this, &AEnemyTurret::SetAttackReady, AttackSpeed, false);
 }
 
@@ -20,19 +19,21 @@ void AEnemyTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Player && CheckPlayerInRange() && Player->CheckPlayerAlive())
+	if (Player == nullptr ) return;
+	
+	if (CheckPlayerInRange() && Player->CheckPlayerAlive())
 	{
 		RotateTurret(Player->GetActorLocation());
 
 		FHitResult HitResult;
 		FCollisionShape CollisionShape = FCollisionShape::MakeSphere(10);
-		
-		//bool FacePlayer = GetWorld()->SweepSingleByChannel(HitResult, BulletSpawnPoint->GetComponentLocation(), BulletSpawnPoint->GetForwardVector() * AttackRange, FQuat::Identity, ECC_EngineTraceChannel1, CollisionShape);
+
 		if (bAttackReady)
 		{
 			Attack();
 		}
 	}
+	
 }
 
 void AEnemyTurret::Die()
@@ -44,10 +45,6 @@ void AEnemyTurret::Die()
 
 void AEnemyTurret::Attack()
 {
-	if (!Player) return;
-
-	if (!CheckPlayerInRange() && Player->CheckPlayerAlive() && bAttackReady) return;
-
 	bAttackReady = false;
 	
 	Super::Attack();
@@ -59,10 +56,7 @@ void AEnemyTurret::Attack()
 
 void AEnemyTurret::SetAttackReady()
 {
-	if (!bAttackReady)
-	{
-		bAttackReady = true;
-	}
+	bAttackReady = true;
 }
 
 bool AEnemyTurret::CheckPlayerInRange()

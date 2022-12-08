@@ -9,9 +9,6 @@
 #include "Camera/CameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
 
-
-
-// Sets default values
 ABullet::ABullet()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -42,14 +39,12 @@ void ABullet::BeginPlay()
 
 void ABullet::OnHit(UPrimitiveComponent* HitComponent, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-
 	AActor* BulletOwner = GetOwner();
-
-	if (BulletOwner == nullptr) return;
+	if (Other == nullptr || BulletOwner == nullptr) return;
 
 	AController* OwnerInstigator = BulletOwner->GetInstigatorController();
 
-	if (BulletOwner && Other && Other != this && Other != BulletOwner)
+	if (BulletOwner && Other != this && Other != BulletOwner)
 	{
 		UGameplayStatics::ApplyDamage(Other, DamageAmount, OwnerInstigator, BulletOwner, UDamageType::StaticClass());
 

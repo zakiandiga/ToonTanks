@@ -27,11 +27,11 @@ void AToonTankGameMode::GameStart()
 	{
 		TankPlayerController->SetPlayerEnabledState(false);
 
-		GameStartFollowUp();
+		GameStartCountDown();
 	}
 }
 
-void AToonTankGameMode::GameStartFollowUp()
+void AToonTankGameMode::GameStartCountDown()
 {
 	FTimerHandle EnablingPlayerTimer;
 	FTimerDelegate GameStartTimerDelegate = FTimerDelegate::CreateUObject(TankPlayerController, &ATankPlayerController::SetPlayerEnabledState, true);
