@@ -16,7 +16,7 @@ void AToonTankGameMode::BeginPlay()
 
 void AToonTankGameMode::GameStart()
 {
-	EnemyCount = GetEnemyCount();
+	//EnemyCount = GetEnemyCount();
 
 	PlayerTank = Cast<APlayerTank>(UGameplayStatics::GetPlayerPawn(this, 0));
 	TankPlayerController = Cast<ATankPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
@@ -40,35 +40,31 @@ void AToonTankGameMode::GameStartCountDown()
 
 void AToonTankGameMode::ActorDied(AActor* DiedActor)
 {
-	if (DiedActor == PlayerTank)
-	{	
-		if (TankPlayerController)
-		{			
-			TankPlayerController->SetPlayerEnabledState(false);
-		}
-
-		PlayerTank->Die();
-
-		GameOver(false);
-	}
-
-	else if (AEnemyTurret* DestroyedEnemy = Cast<AEnemyTurret>(DiedActor))
+	if (DiedActor != PlayerTank)
 	{
+		AEnemyTurret* DestroyedEnemy = Cast<AEnemyTurret>(DiedActor);
 		DestroyedEnemy->Die();
 
-		EnemyCount--;
+		if(GetEnemyCount() > 0)
+			return;
+	
+		GameOver(true);	
 
-		if (EnemyCount <= 0)
-		{
-			GameOver(true);
-		}
+		return;
 	}
+	
+	if (TankPlayerController)
+	{			
+		TankPlayerController->SetPlayerEnabledState(false);
+	}
+
+	PlayerTank->Die();
+	GameOver(false);
 }
 
 int32 AToonTankGameMode::GetEnemyCount()
 {
 	TArray<AActor*> Enemies;
-
 	UGameplayStatics::GetAllActorsOfClass(this, TSubclassOf<AActor>(AEnemyTurret::StaticClass()), Enemies);
 
 	return Enemies.Num();

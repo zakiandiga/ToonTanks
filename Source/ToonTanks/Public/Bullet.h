@@ -60,4 +60,8 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
+	void PlayHitParticle();
+	void PlayImpactSound();
+	void PlayImpactCameraShake();
+
 };

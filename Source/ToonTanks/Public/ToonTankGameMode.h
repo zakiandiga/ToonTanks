@@ -30,8 +30,6 @@ private:
 
 	float StartCountdown = 3;
 
-	int32 EnemyCount = 0;
-
 	void GameStart();
 
 	void GameStartCountDown();

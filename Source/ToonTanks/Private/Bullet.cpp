@@ -30,42 +30,46 @@ void ABullet::BeginPlay()
 
 	BulletMesh->OnComponentHit.AddDynamic(this, &ABullet::OnHit);
 
-	if (ShotSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, ShotSound, GetActorLocation());
-	}
+	if (ShotSound == nullptr) return;
+	
+	UGameplayStatics::PlaySoundAtLocation(this, ShotSound, GetActorLocation());
 }
-
 
 void ABullet::OnHit(UPrimitiveComponent* HitComponent, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	AActor* BulletOwner = GetOwner();
-	if (Other == nullptr || BulletOwner == nullptr) return;
+
+	if (Other == nullptr || BulletOwner == nullptr || Other == this || Other == BulletOwner ) return;
 
 	AController* OwnerInstigator = BulletOwner->GetInstigatorController();
+	
+	UGameplayStatics::ApplyDamage(Other, DamageAmount, OwnerInstigator, BulletOwner, UDamageType::StaticClass());
 
-	if (BulletOwner && Other != this && Other != BulletOwner)
-	{
-		UGameplayStatics::ApplyDamage(Other, DamageAmount, OwnerInstigator, BulletOwner, UDamageType::StaticClass());
-
-		if (HitParticle)
-		{
-			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation(), GetActorRotation());
-		}	
-
-		if (ImpactSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-		}
-
-		if (ImpactCameraShakeClass)
-		{
-			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(ImpactCameraShakeClass);
-		}
-
-	}
+	PlayHitParticle();
+	PlayImpactSound();
+	PlayImpactCameraShake();	
 
 	Destroy();
+}
 
+void ABullet::PlayHitParticle()
+{
+	if (HitParticle == nullptr) return;
+
+	UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation(), GetActorRotation());
+}
+
+void ABullet::PlayImpactSound()
+{
+	if (ImpactSound == nullptr) return;
+
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+}
+
+void ABullet::PlayImpactCameraShake()
+{
+	if (ImpactCameraShakeClass == nullptr) return;
+
+	GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(ImpactCameraShakeClass);
 }
 
